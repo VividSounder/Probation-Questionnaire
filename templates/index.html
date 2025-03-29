@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Risk Assessment Questionnaire</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="index-body">
+
+        <div class="main-content">
+            <form action="{{ url_for('segment', segment_id=1) }}" method="post">
+                <table class="main-table">
+                    <tr>
+                        <td colspan="3" class="image-cell">
+                            <div class="table-images">
+                                <img src="{{ url_for('static', filename='images/PPO.png') }}" alt="PPO Logo" class="table-image">
+                                <img src="{{ url_for('static', filename='images/DOJ.png') }}" alt="DOJ Logo" class="table-image">
+                                <img src="{{ url_for('static', filename='images/BagongPilipinas.png') }}" alt="Bagong Pilipinas Logo" class="table-image">
+                            </div>
+                        </td>
+                    </tr> 
+                    <tr>
+                        <td colspan="2" class="table-header">
+                            <h1>CLASSIFICATION AND</h1>
+                            <h1>RISK ASSESSMENT TOOL</h1>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label" colspan="2">
+                            Name of Petitioner/Probation/Parole:
+                            <input type="text" name="client_name" class="input-box" placeholder="Enter Details Here" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label" colspan="2">
+                            Length of Sentence:
+                            <select name="length_of_sentence" class="dropdown-box" required>
+                                <option value="" disabled selected> </option>
+                                <option value="2-years-or-less">2 Years or Less</option>
+                                <option value="above-2-years">Above 2 Years</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label" colspan="2">
+                            Name & Position of Inv/Supvg Officer:
+                            <input type="text" name="officer_name" class="input-box" placeholder="Enter Details Here" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label" colspan="2">
+                            Chief Probation Officer/Officer-in-Charge:
+                            <input type="text" name="chief_name" class="input-box" placeholder="Enter Details Here" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="table-button">
+                            <button type="submit" class="btn">Start Questionnaire</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Classification and Risk Assessment Tool</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0.5cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: calc(210mm - 1cm);  /* A4 width minus left and right margins */
+            min-height: calc(297mm - 1cm);  /* A4 height minus top and bottom margins */
+            font-size: 9pt;
+        }
+        .content {
+            margin: 0.5cm;
+        }
+        table {
+            table-layout: fixed;  /* This is crucial for fixed columns */
+            width: 100%;
+            max-width: calc(210mm - 1cm);
+            margin: 0 auto;
+            border-collapse: collapse;
+            page-break-inside: auto;
+            border: 1px solid #000;
+        }
+        .col-factors {
+            width: 40%;
+        }
+        
+        .col-points {
+            width: 10%;
+        }
+        th, td {
+            font-size: 10pt;
+            border: 1px solid #000;  /* Add borders to all cells */
+            padding: 8px;
+            vertical-align: top;
+        }
+        .merged-cell {
+            font-size: 12pt;
+            border-bottom: 2px solid #000;
+            text-align: center;  /* Center all content */
+        }
+        .segment-wrapper {
+            max-height: 250mm; /* A4 height minus margins and headers */
+            overflow: hidden;
+            border-bottom: 1px solid #000;
+        }
+        .segment {
+            page-break-inside: avoid;
+            margin-bottom: 15px;
+            border-bottom: 1px dotted #ccc;  /* Subtle separator between segments */
+        }
+        .segment-content {
+            padding: 10px;
+        }
+        .factor-title {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .question {
+            font-size: 9pt;
+            margin-left: 15px;
+            margin-bottom: 8px;
+        }
+        .answer {
+            font-size: 8pt;
+            margin-left: 15px;
+            color: #444;
+            line-height: 1.3;
+        }
+        .selected {
+            font-weight: bold;
+            color: #000;
+        }
+        .score-column {
+            text-align: center;
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            font-size: 8pt;
+            width: 10%;
+            vertical-align: top;
+            padding-top: 42px;  /* Match segment-scores margin */
+        }
+        .score {
+            height: 24px;
+            line-height: 24px;
+            text-align: center;
+            margin: 6px 0;
+            font-size: 8pt;
+        }
+        .subtotal {
+            text-align: right;
+            font-size: 9pt;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        .notes {
+            height: 80px; /* Adjust height as needed */
+            border: 1px solid #000;
+            padding: 8px;
+            margin: 10px 0;
+        }
+        .signature {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            width: 100%;
+            page-break-inside: avoid;
+        }
+        .signature div {
+            width: 45%;
+            position: relative;
+            text-align: center;
+        }
+        .signature hr {
+            border: none;
+            border-bottom: 1px solid black;
+            margin: 0;
+            width: 100%;
+        }
+        .officer-name {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 11pt;
+        }
+        .position-text {
+            margin-top: 5px;
+            font-size: 9pt;
+        }
+        .nested-table {
+            table-layout: fixed;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        .nested-table th, 
+        .nested-table td {
+            word-wrap: break-word;  /* Allow text wrapping in cells */
+            overflow-wrap: break-word;
+            border: 1px solid #000;
+            padding: 6px;
+            text-align: left;
+            font-size: 8pt;
+        }
+        .nested-table th {
+            background-color: #f2f2f2;
+        }
+        .no-border {
+            border: none;
+        }
+        .vertical-cell {
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            font-size: 9pt;  /* Default font size for all content in this cell */
+        }
+        .vertical-cell label {
+            font-size: 9pt;
+        }
+        .vertical-cell .instruction {
+            font-size: 8pt;
+            margin: 5px 0;
+        }
+        .header-title {
+            font-size: 14pt;  /* Larger font for main title */
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .client-info {
+            font-size: 9pt;  /* Smaller font for client details */
+            margin-top: 8px;
+        }
+        .client-name {
+            border-bottom: 1px solid #000;
+            padding: 0 4px;
+            display: inline-block;
+            min-width: 200px;  /* Adjust width of underline as needed */
+        }
+        .section-title {
+            font-size: 10pt;
+            margin-bottom: 8px;
+            margin-top: 12px;
+        }
+        .segment-scores {
+            display: flex;
+            flex-direction: column;
+            margin-top: 42px;  /* Align with questions */
+        }
+        .page-break {
+            page-break-before: always;
+            margin-top: 1cm;  /* Add space after break */
+        }
+
+        .grand-total {
+            text-align: right;
+            font-size: 10pt;
+            margin-top: 15px;
+            border-top: 2px solid #000;
+            padding-top: 5px;
+        }
+
+        .risk-level {
+            text-align: right;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-top: 8px;
+        }
+
+        .notes-section {
+            margin: 20px 0;
+            padding: 10px;
+        }
+
+        .notes-lines {
+            border-bottom: 1px solid #000;
+            height: 25px;
+            margin: 5px 0;
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .signature-line {
+            width: 45%;
+            text-align: center;
+        }
+
+        .signature-line hr {
+            width: 100%;
+            border-top: 1px solid #000;
+            margin: 25px 0 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <table>
+            <colgroup>
+                <col class="col-factors">
+                <col class="col-points">
+                <col class="col-factors">
+                <col class="col-points">
+            </colgroup>
+            <!-- Header -->
+            <tr>
+                <td colspan="4" class="merged-cell">
+                    <div class="header-title">Classification and Risk Assessment Tool</div>
+                    <hr>
+                    <div class="client-info">
+                        <span>Client Name: <span class="client-name">{{ client_name }}</span></span><br>
+                        <span>Probation/Parolee</span>
+                    </div>
+                </td>
+            </tr>
+            
+            <!-- Column headers -->
+            <tr>
+                <th>Factors</th>
+                <th>Points</th>
+                <th>Factors</th>
+                <th>Points</th>
+            </tr>
+
+            <!-- First page content -->
+            <tr>
+                <!-- First column (Segments 1-3) -->
+                <td>
+                    {% for segment_id in range(1, 4) %}  <!-- Segments 1-3 -->
+                        <div class="segment">
+                            <div class="factor-title">{{ segment_titles[segment_id] }}</div>
+                            {% for i in range(segment_answers[segment_id].questions|length) %}
+                                <div class="question">
+                                    {{ loop.index }}. {{ segment_answers[segment_id].questions[i] }}
+                                    {% for answer in segment_answers_data[segment_id][i] %}
+                                        <div class="answer {% if segment_answers[segment_id].scores[i] == answer.value %}selected{% endif %}">
+                                            {{ answer.text }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="subtotal">SUB-TOTAL: </div>
+                        </div>
+                    {% endfor %}
+                </td>
+
+                <!-- First score column -->
+                <td class="score-column">
+                    {% for segment_id in range(1, 4) %}
+                        <div class="segment-scores">
+                            {% for i in range(segment_answers[segment_id].questions|length) %}
+                                {% for answer in segment_answers_data[segment_id][i] %}
+                                    <div class="score {% if segment_answers[segment_id].scores[i] == answer.value %}selected{% endif %}">
+                                        {{ answer.value }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            <div class="subtotal">{{ subtotals[segment_id] }}</div>
+                        </div>
+                    {% endfor %}
+                </td>
+
+                <!-- Third column (Segments 4-5) -->
+                <td>
+                    {% for segment_id in range(4, 6) %}  <!-- Segments 4-5 -->
+                        <div class="segment">
+                            <div class="factor-title">{{ segment_titles[segment_id] }}</div>
+                            {% for i in range(segment_answers[segment_id].questions|length) %}
+                                <div class="question">
+                                    {{ loop.index }}. {{ segment_answers[segment_id].questions[i] }}
+                                    {% for answer in segment_answers_data[segment_id][i] %}
+                                        <div class="answer {% if segment_answers[segment_id].scores[i] == answer.value %}selected{% endif %}">
+                                            {{ answer.text }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="subtotal">SUB-TOTAL: </div>
+                        </div>
+                    {% endfor %}
+                </td>
+
+                <!-- Fourth column (Scores for segments 4-5) -->
+                <td class="score-column">
+                    {% for segment_id in range(4, 6) %}
+                        <div class="segment-scores">
+                            {% for i in range(segment_answers[segment_id].questions|length) %}
+                                {% for answer in segment_answers_data[segment_id][i] %}
+                                    <div class="score {% if segment_answers[segment_id].scores[i] == answer.value %}selected{% endif %}">
+                                        {{ answer.value }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            <div class="subtotal">{{ subtotals[segment_id] }}</div>
+                        </div>
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+
+        <!-- Second page -->
+        <div class="page-break">
+            <table>
+                <colgroup>
+                    <col class="col-factors">
+                    <col class="col-points">
+                    <col class="col-factors">
+                    <col class="col-points">
+                </colgroup>
+                <tr>
+                    <!-- First column (Segments 6-7) -->
+                    <td>
+                        {% for segment_id in range(6, 8) %}  <!-- Segments 6-7 -->
+                            <div class="segment">
+                                <div class="factor-title">{{ segment_titles[segment_id] }}</div>
+                                {% for i in range(segment_answers[segment_id].questions|length) %}
+                                    <div class="question">
+                                        {{ loop.index }}. {{ segment_answers[segment_id].questions[i] }}
+                                        {% for answer in segment_answers_data[segment_id][i] %}
+                                            <div class="answer {% if segment_answers[segment_id].scores[i] == answer.value %}selected{% endif %}">
+                                                {{ answer.text }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                                <div class="subtotal">SUB-TOTAL: </div>
+                            </div>
+                        {% endfor %}
+                    </td>
+
+                    <!-- Second column (Scores for segments 6-7) -->
+                    <td class="score-column">
+                        {% for segment_id in range(6, 8) %}
+                            <div class="segment-scores">
+                                {% for i in range(segment_answers[segment_id].questions|length) %}
+                                    {% for answer in segment_answers_data[segment_id][i] %}
+                                        <div class="score {% if segment_answers[segment_id].scores[i] == answer.value %}selected{% endif %}">
+                                            {{ answer.value }}
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                <div class="subtotal">{{ subtotals[segment_id] }}</div>
+                            </div>
+                        {% endfor %}
+                    </td>
+
+                    <!-- Third column (Segment 8 + Finals) -->
+                    <td>
+                        <div class="segment">
+                            <div class="factor-title">{{ segment_titles[8] }}</div>
+                            {% for i in range(segment_answers[8].questions|length) %}
+                                <div class="question">
+                                    {{ loop.index }}. {{ segment_answers[8].questions[i] }}
+                                    {% for answer in segment_answers_data[8][i] %}
+                                        <div class="answer {% if segment_answers[8].scores[i] == answer.value %}selected{% endif %}">
+                                            {{ answer.text }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="subtotal">SUB-TOTAL: </div>
+                            <div class="grand-total">GRAND TOTAL: </div>
+                            <div class="risk-level">RISK LEVEL: {{ risk_assessment.level }}</div>
+                        </div>
+                    </td>
+
+                    <!-- Fourth column (Scores for segment 8) -->
+                    <td class="score-column">
+                        <div class="segment-scores">
+                            {% for i in range(segment_answers[8].questions|length) %}
+                                {% for answer in segment_answers_data[8][i] %}
+                                    <div class="score {% if segment_answers[8].scores[i] == answer.value %}selected{% endif %}">
+                                        {{ answer.value }}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            <div class="subtotal">{{ subtotals[8] }}</div>
+                            <div class="grand-total">{{ total_score }}</div>
+                            <div class="risk-level">{{ risk_assessment.level }}</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Final sections -->
+        <table>
+            <tr>
+                <td colspan="2"></td>
+                <td colspan="2" class="vertical-cell">
+                    <!-- LENGTH OF SENTENCE -->
+                    <h1 class="section-title">LENGTH OF SENTENCE</h1>
+                    <label><input type="checkbox" {% if length_of_sentence == '2-years-or-less' %}checked{% endif %}> Two (2) Years or Less</label><br>
+                    <label><input type="checkbox" {% if length_of_sentence == 'above-2-years' %}checked{% endif %}> Above Two (2) Years</label>
+                    
+                    <h1 class="section-title">REFERENCE TABLE for the LENGTH OF SUPERVISION</h1>
+                    <p>(based on Sec 14 PD 968, as amended)</p>
+                    <table class="nested-table">
+                        <colgroup>
+                            <col style="width: 20%">  <!-- Score Range -->
+                            <col style="width: 25%">  <!-- Risk Level -->
+                            <col style="width: 15%">  <!-- Length 1 -->
+                            <col style="width: 15%">  <!-- Length 2 -->
+                            <col style="width: 25%">  <!-- Supervision -->
+                        </colgroup>
+                        <tr>
+                            <th>SCORE RANGE</th>
+                            <th>RISK LEVEL</th>
+                            <th colspan="2">LENGTH OF PROBATION PERIOD</th>
+                            <th>INTENSITY OF SUPERVISION</th>
+                        </tr>
+                        <tr>
+                            <td>17 and below</td>
+                            <td>Low Risk (Level 1)</td>
+                            <td>6 months</td>
+                            <td>1 year</td>
+                            <td>Once in 2 months</td>
+                        </tr>
+                        <tr>
+                            <td>18 to 28</td>
+                            <td>Medium Risk (Level 2)</td>
+                            <td>6 months</td>
+                            <td>1 year</td>
+                            <td>Once a month</td>
+                        </tr>
+                        <tr>
+                            <td>29 to 39</td>
+                            <td>High Risk (Level 3)</td>
+                            <td>1 year</td>
+                            <td>2 years</td>
+                            <td>Twice a month</td>
+                        </tr>
+                        <tr>
+                            <td>40 and above</td>
+                            <td>Very High Risk (Level 4)</td>
+                            <td>2 years</td>
+                            <td>3 years</td>
+                            <td>Twice a month</td>
+                        </tr>
+                    </table>
+                    
+                    <h1 class="section-title">CRIMINOGENIC NEEDS</h1>
+                    <p class="instruction">INSTRUCTION: Highlight the client's identified Risk Factor/s and Programmatic Intervention/s to be offered.</p>
+                    <table class="nested-table">
+                        <colgroup>
+                            <col style="width: 25%">
+                            <col style="width: 15%">
+                            <col style="width: 15%">
+                            <col style="width: 20%">
+                            <col style="width: 25%">
+                        </colgroup>
+                        <tr>
+                            <th>Risk Factors</th>
+                            <th>Highest Score</th>
+                            <th>Threshold</th>
+                            <th>Client's Risk Score</th>
+                            <th>Program to be Offered</th>
+                        </tr>
+                        {% for segment_id, data in segment_thresholds.items() %}
+                            {% if segment_id != 5 %}
+                            <tr>
+                                <td>{{ segment_titles[segment_id] }}</td>
+                                <td>{{ data.highest_score }}</td>
+                                <td>{{ data.threshold }}</td>
+                                <td>{{ subtotals[segment_id] }}</td>
+                                <td>
+                                    {% if subtotals[segment_id] >= data.threshold %}
+                                        {{ data.program }} ✓
+                                    {% else %}
+                                        Not required
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% else %}
+                            <!-- Education section -->
+                            <tr>
+                                <td>{{ segment_titles[5] }} (EDUCATION)</td>
+                                <td>{{ data.highest_score // 2 }}</td>
+                                <td>{{ data.education.threshold }}</td>
+                                <td>{{ education_score }}</td>
+                                <td>
+                                    {% if education_score >= data.education.threshold %}
+                                        {{ data.program }} (EDUCATION) ✓
+                                    {% else %}
+                                        Not required
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <!-- Employment section -->
+                            <tr>
+                                <td>{{ segment_titles[5] }} (EMPLOYMENT)</td>
+                                <td>{{ data.highest_score // 2 }}</td>
+                                <td>{{ data.employment.threshold }}</td>
+                                <td>{{ employment_score }}</td>
+                                <td>
+                                    {% if employment_score >= data.employment.threshold %}
+                                        {{ data.program }} (EMPLOYMENT) ✓
+                                    {% else %}
+                                        Not required
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                </td>
+            </tr>
+
+            <!-- Notes section -->
+            <tr>
+                <td colspan="4">
+                    <div class="notes-section">
+                        <h3>Notes and Impression:</h3>
+                        <div class="notes-lines"></div>
+                        <div class="notes-lines"></div>
+                        <div class="notes-lines"></div>
+                        <div class="notes-lines"></div>
+                        <div class="notes-lines"></div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Signature section -->
+        <div class="signature">
+            <div>
+                <p class="officer-name">{{ officer_name }}</p>
+                <hr>
+                <p class="position-text">Name & Position of Inv/Supvg Officer/Date</p>
+            </div>
+            <div>
+                <p class="officer-name">{{ chief_name }}</p>
+                <hr>
+                <p class="position-text">Chief Probation Officer/Officer-in-Charge/Date</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

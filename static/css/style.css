@@ -1,0 +1,661 @@
+/* Base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.index-body {
+    background: url('../images/LOJ4.jpg') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.main-content {
+    display: flex; /* Enable flexbox for the main content */
+    justify-content: center; /* Center the table horizontally */
+    align-items: center; /* Center the table vertically */
+    width: auto; /* Adjust width as needed */
+    text-align: center; /* Center-align the content inside the table */
+}
+
+/* Container styles */
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+    padding: 20px; /* Add padding inside the container */
+    border-radius: 10px; /* Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    width: 80%; /* Make the container wider */
+    max-width: 1200px; /* Set a maximum width */
+    margin: 20px auto; /* Center the container horizontally */
+    text-align: left; /* Align text to the left */
+}
+
+form {
+    width: 100%; /* Make the form take the full width of the container */
+}
+
+/* Typography */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+h2, h3 {
+    color: #2c3e50;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+/* Button styles */
+.btn, .btn-secondary, .btn-next {
+    display: inline-block;
+    background-color: #4b79b3; /* Green background */
+    color: black; /* White text */
+    padding: 15px 30px; /* Add padding for a larger button */
+    text-decoration: none; /* Remove underline */
+    border: none; /* Remove border */
+    border-radius: 10px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 30px; /* Adjust font size */
+    font-family: 'Arial', sans-serif; /* Use a clean font */
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+} 
+
+.btn-next:hover, .btn-secondary:hover, .btn:hover {
+    background-color: #4b62af;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Increase shadow intensity on hover */
+}
+
+.btn-next:active, .btn-secondary:active, .btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce shadow intensity when clicked */
+}
+
+.btn-primary {
+    background-color: #27ae60;
+}
+
+.btn-primary:hover {
+    background-color: #2ecc71;
+}
+
+.start-button {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Progress bar styles */
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #ecf0f1;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: #3498db;
+    transition: width 0.3s ease;
+    width: attr(data-progress '%');
+}
+
+/* Question and option styles */
+.question {
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.question.highlight {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+}
+
+.question.highlight h3 {
+    color: #856404;
+}
+
+.question.highlight::before {
+    content: "⚠️";
+    position: absolute;
+    left: -25px;
+    font-size: 20px;
+}
+
+.question.highlight .options {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.question.unanswered {
+    border: 3px solid #ff4444;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: rgba(255, 68, 68, 0.05);
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+.question.highlight-question {
+    background-color: rgba(255, 68, 68, 0.2);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+    transform: scale(1.02);
+    margin: 30px 0;
+}
+
+.question.highlight-focus {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+    background-color: rgba(255, 68, 68, 0.1);
+}
+
+.question.unanswered h3 {
+    color: #ff4444;
+    font-size: 1.2em;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.question.unanswered .options {
+    animation: pulse 2s infinite;
+    padding: 15px;
+    border-left: 4px solid #ff4444;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.question.unanswered h3::before {
+    content: "⚠️";
+    position: absolute;
+    left: -30px;
+    animation: bounce 1s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+
+.options {
+    margin-top: 20px;
+    margin-left: 55px;
+}
+
+.option {
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.option input[type="radio"] {
+    appearance: none; /* Remove default browser styling */
+    -webkit-appearance: none; /* For Safari */
+    width: 35px; /* Set the width of the radio button */
+    height: 35px; /* Set the height of the radio button */
+    border: 3px solid black; /* Thicker border */
+    border-radius: 50%; /* Make it circular */
+    outline: none; /* Remove the default outline */
+    cursor: pointer; /* Change the cursor to a pointer */
+    background-color: white; /* Set the background color */
+    transition: all 0.3s ease; /* Add a smooth transition effect */
+}
+
+.option input[type="radio"]:checked {
+    background-color: gray; /* Change the background color when selected */
+    border-color: black; /* Change the border color when selected */
+}
+
+/* Navigation styles */
+.navigation {
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center the button horizontally */
+    gap: 50px;
+    margin-top: 30px; /* Add spacing above the button */
+}
+
+/* Results page styles */
+.results h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.risk-table, .scores-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.risk-table th, .risk-table td,
+.scores-table th, .scores-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.risk-table th, .scores-table th {
+    background-color: #f2f2f2;
+}
+
+.highlighted {
+    background-color: #e8f4f8;
+    font-weight: bold;
+}
+
+.above-threshold {
+    background-color: #e8f8e8;
+}
+
+.total-row {
+    background-color: #f2f2f2;
+}
+
+.program-list {
+    margin-top: 15px;
+}
+
+.program-list h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.program-list ul {
+    list-style-type: disc;
+    margin-left: 20px;
+}
+
+.image-cell {
+    text-align: center; /* Center the images horizontally */
+    padding: 10px; /* Add some spacing around the images */
+}
+
+/* Specific styles for segment.html */
+.segment-body {
+    font-family: 'Times New Roman', serif; /* Example font for segment.html */
+}
+
+.table-images img {
+    width: 150px; /* Set the width of the images */
+    height: auto; /* Maintain the aspect ratio */
+    border-radius: 10px; /* Optional: Add rounded corners */
+    margin: 10px; /* Add spacing around the images */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effects */
+}
+
+.table-images img:hover {
+    transform: translateY(-5px); /* Slightly move the image up on hover */
+}
+
+/* Main table styling */
+.main-table {
+    width: 225%; /* Full width of the container */
+    margin-top: 20px; /* Space below the images */
+    background-color: rgba(207, 216, 227, 0.5); /* Blue background with transparency */
+    border-collapse: collapse;
+    border-radius: 20px; /* Rounded corners */
+    overflow: hidden; /* Ensures rounded corners apply to the entire table */
+    color: black; /* Text color */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+    transition: opacity 0.5s ease, box-shadow 0.5s ease; /* Smooth transition for fading and shadow */
+    opacity: 1; /* Fully visible by default */
+}
+
+.main-table:hover {
+    opacity: 0.9; /* Slightly fade the table on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); /* Increase shadow intensity on hover */
+}
+
+/* Table header styling */
+.table-header {
+    text-align: center;
+    padding: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: black; /* White text for the header */
+}
+
+/* Table cell styling */
+.label {
+    padding: 10px;
+    font-size: 25px;
+    font-weight: bold;
+    color: black; /* White text for labels */
+    text-align: left; /* Center-align the text horizontally */
+    vertical-align: middle;
+    font-size: 40px;
+    margin-left: -300px;
+}
+
+.input-box {
+    width: 90%;
+    padding: 15px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: block;
+    margin: 10px auto;
+    background-color: white;
+}
+
+.dropdown-box {
+    width: 90%;
+    padding: 15px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    display: block;
+    margin: 10px auto;
+    background-color: white;
+    cursor: pointer;
+}
+
+.input-box:focus,
+.dropdown-box:focus {
+    outline: none;
+    border-color: #4b79b3;
+    box-shadow: 0 0 5px rgba(75, 121, 179, 0.3);
+}
+
+.input-box::placeholder {
+    color: #999;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/* Center the button in the table */
+.table-button {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Remove these conflicting styles if they exist */
+.input-box:invalid,
+.dropdown-box:invalid {
+    border: none;
+    background-color: white;
+}
+
+.segment-images {
+    position: fixed; /* Fix the images to the viewport */
+    top: 30px; /* Position the images 20px from the top */
+    right: 40px; /* Position the images 20px from the right */
+    display: flex;
+    flex-direction: column; /* Align the images vertically */
+    gap: 25px; /* Add spacing between the images */
+    z-index: 1000; /* Ensure the images stay above other elements */
+}
+
+.segment-image {
+    width: 270px; /* Set the width of the images */
+    height: auto; /* Maintain the aspect ratio */
+    border-radius: 10px; /* Optional: Add rounded corners */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for movement and shadow */
+}
+
+.segment-image:hover {
+    transform: translateY(-10px); /* Move the image up by 10px */
+}
+
+/* Different backgrounds for each segment in segment.html */
+.segment-1 {
+    background: url('../images/Criminal-History.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.segment-2 {
+    background: url('../images/Pro-Criminal-Companions.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.segment-3 {
+    background: url('../images/Pro-Criminal-Attitudes-and-Cognition.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.segment-4 {
+    background: url('../images/Anti-Social-Personality-Pattern.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.segment-5 {
+    background: url('../images/Education-and-Employment.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.segment-6 {
+    background: url('../images/Family-and-marital-status.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.segment-7 {
+    background: url('../images/Substance-Abuse.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+.segment-8 {
+    background: url('../images/Mental-Health.png') no-repeat center center fixed; /* Example background color for index.html */
+    background-size: cover;
+}
+
+/* Specific styles for results.html */
+.results-body {
+    background-color: #ffffff; /* Example background color for results.html */
+    font-family: 'Courier New', monospace; /* Example font for results.html */
+}
+
+/* Add these styles at the end of the file */
+.notes-section {
+    margin-top: 30px;
+}
+
+.notes-section h3 {
+    margin-bottom: 10px;
+}
+
+.notes-section textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 20x;
+    box-sizing: border-box; /* Ensure padding and border are included in the element's total width */
+}
+
+.notes-section button {
+    margin-top: 10px;
+}
+
+/* Add or update these styles */
+.question {
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.question.highlight {
+    background-color: #fff3cd;
+    border: 2px solid #ffeeba;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+    transform: translateX(0);
+    animation: attention 1s ease-in-out;
+}
+
+@keyframes attention {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+}
+
+.question.shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Question highlighting styles */
+.question {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.question.highlight {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    box-shadow: 0 0 10px rgba(255, 193, 7, 0.3);
+}
+
+/* Shake animation for unanswered questions */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.question.shake {
+    animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Style the question header when highlighted */
+.question.highlight h3 {
+    color: #856404;
+}
+
+/* Add a warning icon to highlighted questions */
+.question.highlight::before {
+    content: "⚠️";
+    position: absolute;
+    left: -25px;
+    font-size: 20px;
+}
+
+/* Ensure the radio buttons and labels are clearly visible when highlighted */
+.question.highlight .options {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* PDF styles */
+.signature {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding: 0 20px;
+}
+
+.signature div {
+    width: 45%;
+    position: relative;
+    text-align: center;
+}
+
+.signature hr {
+    border: 1px solid black;
+    width: 100%;
+    margin: 0;
+}
+
+.signature .officer-name {
+    position: absolute;
+    width: 100%;
+    top: -25px;  /* Move name above the line */
+    left: 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.signature .position-text {
+    position: absolute;
+    width: 100%;
+    top: 5px;  /* Position below the line */
+    left: 0;
+    font-size: 0.9em;
+}
+
+/* Offset the right signature slightly higher */
+.signature div:last-child {
+    margin-top: -20px;  /* Moves the right signature up */
+}
+
+/* Logo images */
+.segment-images {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    z-index: 1000;
+}
+
+.segment-image {
+    width: 270px;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+}
+
+.segment-image:hover {
+    transform: translateY(-10px);
+}
